@@ -14,9 +14,11 @@
     && rm -rf /var/lib/apt/lists/*
   """
   
-  # Python version
+  # Python version and environment variables
   [build.environment]
   PYTHON_VERSION = "3.10"
+  PYTHONUNBUFFERED = "1"
+  PYTHONDONTWRITEBYTECODE = "1"
   
   # Build command
   buildCommand = "pip install -r requirements.txt"
@@ -27,8 +29,3 @@
   # Collect static files
   [build.extraDeps]
   collectstatic = "python manage.py collectstatic --noinput"
-  
-  # Environment variables
-  [build.environment]
-  PYTHONUNBUFFERED = "1"
-  PYTHONDONTWRITEBYTECODE = "1"
