@@ -1,0 +1,449 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="X.Py - Generate QR codes and shorten URLs quickly and easily">
+    <meta name="theme-color" content="#3498db">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>X.Py - QR Code Generator & URL Shortener</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="header-wrapper">
+                <!-- Logo Section -->
+                <div class="header-logo">
+                    <a href="/" class="logo">
+                        <img src="{% static 'images/XPY.png' %}" alt="X.Py Logo" class="logo-img">
+                        <span class="logo-text">X.Py</span>
+                    </a>
+                </div>
+                
+                <!-- Navigation Section -->
+                <div class="header-nav">
+                    <nav class="main-navigation">
+                        <ul class="nav-list">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link active" data-tab="qr-tab">
+                                    <i class="fas fa-qrcode nav-icon"></i>
+                                    <span>QR Code Generator</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" data-tab="url-tab">
+                                    <i class="fas fa-link nav-icon"></i>
+                                    <span>URL Shortener</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="main-content">
+                <h1>X.Py - QR Code & URL Shortener</h1>
+                <p class="text-center" style="color: var(--dark-gray); margin-bottom: 2.5rem;">Create QR codes and shorten URLs with our free online tools</p>
+                
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="qr-tab">QR Code</button>
+                    <button class="tab-btn" data-tab="url-tab">URL Shortener</button>
+                </div>
+        
+        <!-- QR Code Tab -->
+        <div id="qr-tab" class="tab-content active">
+            <form id="qrForm">
+                <div class="form-group">
+                    <label for="urlInput" class="form-label">Enter URL</label>
+                    <input type="url" id="urlInput" class="form-control" placeholder="https://example.com" required>
+                </div>
+                <div class="form-group" id="filenameGroup" style="display: none;">
+                    <label for="filenameInput" class="form-label">File Name (without extension)</label>
+                    <div class="input-group">
+                        <input type="text" id="filenameInput" class="form-control" placeholder="my-qr-code" value="">
+                        <span class="input-group-text">.png</span>
+                    </div>
+                    <small class="form-text text-muted">Leave blank to use default name</small>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-qrcode me-2"></i> Generate QR Code
+                    </button>
+                </div>
+            </form>
+            
+            <div id="qrCodeContainer" class="hidden">
+                <h2>Your QR Code</h2>
+                <div class="qr-code-wrapper">
+                    <div id="qrCodeImage">
+                        <div class="loading" id="loadingIndicator" style="display: none;"></div>
+                        <!-- QR code will be displayed here -->
+                    </div>
+                    <p id="qrCodeName" class="qr-code-name"></p>
+                </div>
+                <div class="text-center mt-3">
+                    <a id="downloadLink" class="btn btn-primary" download="qrcode.png" style="display: none;">
+                        <i class="fas fa-download"></i> Download QR Code
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- URL Shortener Tab -->
+        <div id="url-tab" class="tab-content">
+            <form id="shortenForm">
+                <div class="form-group">
+                    <input type="url" id="longUrlInput" placeholder="Enter long URL to shorten" required>
+                </div>
+                <button type="submit" class="btn">Shorten URL</button>
+            </form>
+            
+            <div id="shortUrlContainer" class="hidden">
+                <h2>Your Short URL</h2>
+                <div class="result-box">
+                    <input type="text" id="shortUrlInput" readonly>
+                    <button id="copyBtn" class="btn">Copy</button>
+                </div>
+                <p class="original-url">Original: <span id="originalUrl"></span></p>
+            </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-wrapper">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-qrcode"></i>
+                        <span>X.Py</span>
+                    </div>
+                    <p class="footer-description">
+                        Powerful tools for QR code generation and URL shortening. Simple, fast, and free to use.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-heading">Quick Tools</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link" data-tab="qr-tab">QR Code Generator</a></li>
+                        <li><a href="#" class="footer-link" data-tab="url-tab">URL Shortener</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 class="footer-heading">Connect With Us</h3>
+                    <div class="social-links">
+                        <a href="https://github.com/shubhamxpy" class="social-link" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://x.com/Shubhamxpy" class="social-link" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/xshubham" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="copyright">&copy; 2025 X.Py - All Rights Reserved</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab switching functionality
+        function switchTab(tabId) {
+            // Update active tab button
+            document.querySelectorAll('.tab-btn, .nav-link, .footer-link').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-tab') === tabId) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Show corresponding tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            
+            // Scroll to top of container
+            document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Add event listeners to all tab buttons and navigation links
+        document.querySelectorAll('.tab-btn, .nav-link, .footer-link').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const tabId = button.getAttribute('data-tab');
+                if (tabId) {
+                    switchTab(tabId);
+                }
+            });
+        });
+
+        // Show/hide filename input based on URL input
+        const urlInput = document.getElementById('urlInput');
+        const filenameGroup = document.getElementById('filenameGroup');
+        
+        urlInput.addEventListener('input', function() {
+            if (this.value.trim() !== '') {
+                filenameGroup.style.display = 'block';
+                // Auto-generate a filename based on the URL
+                const url = new URL(this.value);
+                const defaultName = url.hostname.replace('www.', '').split('.')[0] || 'qrcode';
+                document.getElementById('filenameInput').value = defaultName + '-' + Math.random().toString(36).substring(2, 8);
+            } else {
+                filenameGroup.style.display = 'none';
+            }
+        });
+        
+        // QR Code Generation
+        document.getElementById('qrForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const url = document.getElementById('urlInput').value.trim();
+            if (!url) {
+                showNotification('Please enter a valid URL', 'error');
+                return;
+            }
+            
+            // Get custom filename or generate one
+            let filename = document.getElementById('filenameInput').value.trim();
+            if (!filename) {
+                const urlObj = new URL(url);
+                filename = 'qrcode-' + urlObj.hostname.replace('www.', '').split('.')[0] + '-' + Math.random().toString(36).substring(2, 6);
+            }
+            
+            // Clean up filename (remove special characters and spaces)
+            filename = filename.toLowerCase()
+                .replace(/[^a-z0-9-]/g, '-')  // Replace special chars with -
+                .replace(/-+/g, '-')           // Replace multiple - with single -
+                .replace(/^-+|-+$/g, '');      // Remove leading/trailing -
+                
+            if (!filename.endsWith('.png')) {
+                filename += '.png';
+            }
+            
+            const formData = new FormData();
+            formData.append('url', url);
+            formData.append('filename', filename);
+            
+            // Get DOM elements
+            const qrCodeImage = document.getElementById('qrCodeImage');
+            const downloadLink = document.getElementById('downloadLink');
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            
+            try {
+                // Show loading state
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+                qrCodeImage.innerHTML = '';
+                loadingIndicator.style.display = 'flex';
+                downloadLink.style.display = 'none';
+                
+                // Clear any previous QR code
+                if (window.previousQRCodeUrl) {
+                    URL.revokeObjectURL(window.previousQRCodeUrl);
+                }
+                
+                // Make the request
+                const response = await fetch('/generate-qr/', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                });
+                
+                if (response.ok) {
+                    // Create download link with the generated image and custom filename
+                    const imageUrl = URL.createObjectURL(await response.blob());
+                    downloadLink.href = imageUrl;
+                    downloadLink.download = filename.endsWith('.png') ? filename : `${filename}.png`;
+                    downloadLink.style.display = 'inline-block';
+                    
+                    // Create and display the QR code image with proper styling
+                    const qrImg = document.createElement('img');
+                    qrImg.src = imageUrl;
+                    qrImg.alt = 'QR Code';
+                    qrImg.className = 'img-fluid';
+                    qrImg.style.width = '100%';
+                    qrImg.style.height = 'auto';
+                    qrImg.style.borderRadius = '8px';
+                    
+                    // Clear previous content and add the new image
+                    qrCodeImage.innerHTML = '';
+                    qrCodeImage.appendChild(qrImg);
+                    
+                    // Store the URL for cleanup
+                    if (window.previousQRCodeUrl) {
+                        URL.revokeObjectURL(window.previousQRCodeUrl);
+                    }
+                    window.previousQRCodeUrl = imageUrl;
+                    
+                    // Update download link to use the same image
+                    downloadLink.href = imageUrl;
+                    downloadLink.style.display = 'inline-flex';
+                    
+                    // Show the container
+                    const container = document.getElementById('qrCodeContainer');
+                    container.classList.remove('hidden');
+                    
+                    // Hide loading indicator
+                    loadingIndicator.style.display = 'none';
+                    
+                    // Scroll to the QR code
+                    setTimeout(() => {
+                        container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                    
+                    showNotification('QR code generated successfully!', 'success');
+                } else {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to generate QR code');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                loadingIndicator.style.display = 'none';
+                qrCodeImage.innerHTML = '<div class="error-message"><i class="fas fa-exclamation-triangle"></i> Failed to generate QR code</div>';
+                showNotification(error.message || 'An error occurred while generating the QR code', 'error');
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-qrcode"></i> Generate QR Code';
+            }
+        });
+        
+        // URL Shortening
+        document.getElementById('shortenForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const longUrl = document.getElementById('longUrlInput').value.trim();
+            if (!longUrl) return;
+            
+            const formData = new FormData();
+            formData.append('url', longUrl);
+            
+            try {
+                // Show loading state
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.textContent;
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Shortening...';
+                
+                // Make the request
+                const response = await fetch('/shorten-url/', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Display the shortened URL
+                    const shortUrlInput = document.getElementById('shortUrlInput');
+                    shortUrlInput.value = data.short_url;
+                    
+                    // Show original URL
+                    document.getElementById('originalUrl').textContent = data.original_url;
+                    
+                    // Show the container
+                    document.getElementById('shortUrlContainer').classList.remove('hidden');
+                    
+                    // Focus and select the short URL for easy copying
+                    shortUrlInput.select();
+                    
+                    showNotification('URL shortened successfully!', 'success');
+                } else {
+                    throw new Error(data.error || 'Failed to shorten URL');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification(error.message || 'An error occurred while shortening the URL', 'error');
+            } finally {
+                // Reset button state
+                const submitBtn = document.querySelector('#shortenForm button[type="submit"]');
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalBtnText;
+            }
+        });
+        
+        // Copy to clipboard
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            const shortUrlInput = document.getElementById('shortUrlInput');
+            shortUrlInput.select();
+            document.execCommand('copy');
+            showNotification('URL copied to clipboard!', 'success');
+        });
+        
+        // Helper function to show notifications
+        function showNotification(message, type = 'info') {
+            // Remove any existing notifications
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            // Add to the page
+            document.body.appendChild(notification);
+            
+            // Show the notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+        
+        // Helper function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+[build]
+  # Base image
+  baseImage = "ubuntu:22.04"
+  
+  # Install system dependencies
+  installCommand = """
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    python3-dev \
+    python3-pip \
+    python3-venv \
+    && rm -rf /var/lib/apt/lists/*
+  """
+  
+  # Python version
+  [build.environment]
+  PYTHON_VERSION = "3.10"
+  
+  # Build command
+  buildCommand = "pip install -r requirements.txt"
+  
+  # Start command
+  startCommand = "gunicorn qr_project.wsgi --log-file -"
+  
+  # Collect static files
+  [build.extraDeps]
+  collectstatic = "python manage.py collectstatic --noinput"
+  
+  # Environment variables
+  [build.environment]
+  PYTHONUNBUFFERED = "1"
+  PYTHONDONTWRITEBYTECODE = "1"
